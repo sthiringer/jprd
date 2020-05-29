@@ -1,2 +1,1 @@
-# jprd
-jprd.stevethiringer.com
+# jeopardy-trainer
