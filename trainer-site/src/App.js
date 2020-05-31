@@ -19,20 +19,20 @@ export default class App extends React.Component {
    * Send request to API for a random question and load question into state upon receipt.
    */
   loadData = async () => {
-    // try{
-    //   const response = await fetch(
-    //     "https://t4d66tek8f.execute-api.us-east-1.amazonaws.com/prod/random",
-    //     {
-    //       method: 'POST',
-    //       headers: {'Content-Type': 'text/plain'}
-    //     }
-    //   )
-    //   const rq = await response.json()
-    //   this.setState({question: rq});
-    // }catch(err){
-    //   console.log("There was an error in the HTTP request", err);
-    // }
-    this.setState({question: {"category": "TRANSPORTATION", "QuestionId": "1606-0-22", "airdate": "1991-09-02", "season": "8", "value": "100", "isdailydouble": true, "text": "These flat-bottomed boats were specially designed to travel down early canals", "answer": "barges", "clue_order": "22", "round": "Jeopardy!", "gamenumber": "1606"}})
+    try{
+      const response = await fetch(
+        "https://t4d66tek8f.execute-api.us-east-1.amazonaws.com/prod/random",
+        {
+          method: 'POST',
+          headers: {'Content-Type': 'text/plain'}
+        }
+      )
+      const rq = await response.json()
+      this.setState({question: rq});
+    }catch(err){
+      console.log("There was an error in the HTTP request", err);
+    }
+    //this.setState({question: {"category": "TRANSPORTATION", "QuestionId": "1606-0-22", "airdate": "1991-09-02", "season": "8", "value": "100", "isdailydouble": true, "text": "These flat-bottomed boats were specially designed to travel down early canals", "answer": "barges", "clue_order": "22", "round": "Jeopardy!", "gamenumber": "1606"}})
   }
 
   render(){
