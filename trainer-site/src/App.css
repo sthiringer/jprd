@@ -4,6 +4,10 @@
     font-size: 4vw !important;
   }
 
+  .value-info-text{
+    font-size: 3vw;
+  }
+
   input[type=submit], input[type=button] {
     font-size: 2.5vw !important;
   }
@@ -49,6 +53,10 @@
   /* Mobile landscape */
   input[type=text] {
     font-size: 4vh !important;
+  }
+
+  .value-info-text{
+    font-size: 3vh;
   }
 
   input[type=submit], input[type=button] {
@@ -98,6 +106,11 @@
     font-size: 4vw !important;
   }
 
+  
+  .value-info-text{
+    font-size: 3vw;
+  }
+
   input[type=submit], input[type=button] {
     font-size: 2.5vw !important;
   }
@@ -145,6 +158,10 @@
     font-size: 4vh !important;
   }
 
+  .value-info-text{
+    font-size: 3vh;
+  }
+
   input[type=submit], input[type=button] {
     font-size: 2.5vh !important;
   }
@@ -190,6 +207,10 @@
   /* Browser med */
   input[type=text] {
     font-size: 4vh !important;
+  }
+
+  .value-info-text{
+    font-size: 3vh;
   }
 
   input[type=submit], input[type=button] {
@@ -260,6 +281,8 @@ label{
 
 input[type=text] {
   outline: none;
+  -moz-appearance: none;
+  -webkit-appearance: none;
 }
 
 .answer-input-correct{
@@ -401,12 +424,26 @@ input[type=submit], input[type=button] {
   width: 20%;
   border-bottom: 1px solid gold;
   color: gold;
+  -moz-appearance: none;
+  -webkit-appearance: none;
 }
 
 .value-entry-text{
   color: gold;
   font-size: 5vw;
   font-weight: bolder;
+}
+
+.value-info-text{
+  color: gold;
+  text-align: center;
+}
+
+.value-wager-btn{
+  color: gold !important;
+  font-weight: bolder;
+  -moz-appearance: none;
+  -webkit-appearance: none;
 }
 
 .category{
@@ -473,4 +510,6 @@ input[type=submit], input[type=button] {
   border: none;
   border-bottom: 1px solid black;
   font-size: 2vw;
+  -moz-appearance: none;
+  -webkit-appearance: none;
 }

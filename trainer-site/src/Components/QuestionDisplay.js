@@ -12,8 +12,13 @@ export default class QuestionDisplay extends React.Component {
         this.state = {userScore: 0, userValue: null, new: true};
     }
 
+    componentDidUpdate(prevProps){
+        if(prevProps.question !== this.props.question){
+            this.setState({...this.state, new: true});
+        }
+    }
+
     getNextQuestion = () => {
-        this.setState({...this.state, new: true});
         this.props.onNextQuestion();
     }
 
@@ -37,7 +42,7 @@ export default class QuestionDisplay extends React.Component {
     }
     
     render(){
-        const q = {...this.props.question, value: parseInt(this.state.userValue ? this.state.userValue : this.props.question.value)};
+        const q = {...this.props.question, value: parseInt(this.state.userValue !== null ? this.state.userValue : this.props.question.value)};
         const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
         let roundString = ((round)=>{
            switch(round){

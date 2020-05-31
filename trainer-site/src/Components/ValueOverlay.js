@@ -3,16 +3,19 @@ import React, { Component } from 'react';
 class ValueOverlay extends Component {
     constructor(props){
         super(props);
-        this.state = {visible: true, userValue: ''};
+        this.state = {visible: true, validValue: true, userValue: ''};
     }
 
     componentDidMount(){
         if(!this.props.question.isdailydouble){
             setTimeout(() => this.setState({...this.state, visible: false}), 1000);
+        }else{
+            this.setState({...this.state,  curScore: parseInt(window.sessionStorage.getItem('score'))})
         }
     }
 
     componentDidUpdate(prevProps){
+        console.log(prevProps)
         if(prevProps.question !== this.props.question){
             this.setState({...this.state, visible: true}, () => {
                 setTimeout(() => this.setState({...this.state, visible: false}), 1000);
@@ -28,9 +31,14 @@ class ValueOverlay extends Component {
         //Pass entered value to questiondisplay component
         //Fade overlay
         event.preventDefault();
-        this.setState({...this.state, visible: false}, () => {
-            this.props.onSubmit(this.state.userValue);
-        });
+        const userValueInt = parseInt(this.state.userValue)
+        if(userValueInt >= 0 && userValueInt <= this.state.curScore){
+            this.setState({...this.state, visible: false}, () => {
+                this.props.onSubmit(this.state.userValue);
+            });
+        }else{
+            this.setState({...this.state, validValue: false});
+        }
     }
 
     getModalClass = () => {
@@ -50,9 +58,16 @@ class ValueOverlay extends Component {
                     </span>
                     <div className="value-row">
                         <label className="value-entry-text">{"$"}</label>
-                        <input type="text" value={this.state.userValue} className="value-input" onChange={this.handleInput}/>
+                        <input 
+                            type="text" 
+                            value={this.state.userValue} 
+                            className="value-input" 
+                            onChange={this.handleInput}
+                        />
                     </div>
-                    <input className="value-submit" type="submit" value="Wager"/>
+                    <span className="value-info-text">Your total: {this.state.curScore}</span>
+                    {!this.state.validValue && <span className="value-info-text">Please enter a wager between $0 and your current total, inclusive.</span>}
+                    <input className="value-wager-btn" type="submit" value="Wager"/>
                 </form>
             );
         }else{
