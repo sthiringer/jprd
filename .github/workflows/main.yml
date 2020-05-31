@@ -1,10 +1,12 @@
 name: Build and Deploy to S3
 
-# Only run action on closed PR to master branch
+# Only run on closed PR to master branch involving changes to the site
 on:
   pull_request:
     branches: [ master ]
     types: [ closed ]
+    paths: 
+      - 'trainer-site/**'
 
 jobs:
 
