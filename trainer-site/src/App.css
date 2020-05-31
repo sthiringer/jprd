@@ -5,11 +5,23 @@
   }
 
   input[type=submit], input[type=button] {
-    font-size: 2vw !important;
+    font-size: 2.5vw !important;
+  }
+
+  .info-text{
+    font-size: 2.5vw !important;
   }
 
   .button-row{
     width: 100% !important;
+  }
+
+  .user-score{
+    font-size: 3vw !important;
+  }
+
+  .clue-value{
+    font-size: 3vw !important;
   }
 
   label{
@@ -40,7 +52,11 @@
   }
 
   input[type=submit], input[type=button] {
-    font-size: 2vh !important;
+    font-size: 2.5vh !important;
+  }
+
+  .info-text{
+    font-size: 2.5vh !important;
   }
 
   .button-row{
@@ -49,6 +65,14 @@
 
   label{
     font-size: 4vh !important;
+  }
+
+  .user-score{
+    font-size: 3vh !important;
+  }
+
+  .clue-value{
+    font-size: 3vh !important;
   }
 
   .container-about p{
@@ -75,7 +99,11 @@
   }
 
   input[type=submit], input[type=button] {
-    font-size: 2vw !important;
+    font-size: 2.5vw !important;
+  }
+
+  .info-text{
+    font-size: 2.5vw !important;
   }
 
   .button-row{
@@ -84,6 +112,14 @@
 
   label{
     font-size: 4vw !important;
+  }
+
+  .user-score{
+    font-size: 3vw !important;
+  }
+
+  .clue-value{
+    font-size: 3vw !important;
   }
 
   .container-about p{
@@ -110,7 +146,11 @@
   }
 
   input[type=submit], input[type=button] {
-    font-size: 2vh !important;
+    font-size: 2.5vh !important;
+  }
+
+  .info-text{
+    font-size: 2.5vh !important;
   }
 
   .button-row{
@@ -119,6 +159,14 @@
 
   label{
     font-size: 4vh !important;
+  }
+
+  .user-score{
+    font-size: 3vh !important;
+  }
+
+  .clue-value{
+    font-size: 3vh !important;
   }
 
   .container-about p{
@@ -145,7 +193,11 @@
   }
 
   input[type=submit], input[type=button] {
-    font-size: 2vh !important;
+    font-size: 2.5vh !important;
+  }
+
+  .info-text{
+    font-size: 2.5vh !important;
   }
 
   .button-row{
@@ -154,6 +206,14 @@
 
   label{
     font-size: 4vh !important;
+  }
+
+  .user-score{
+    font-size: 3vh !important;
+  }
+
+  .clue-value{
+    font-size: 3vh !important;
   }
 
   .container-about p{
@@ -396,9 +456,17 @@ input[type=submit], input[type=button] {
   flex: 1 1 auto;
   flex-flow: column nowrap;
   justify-content: space-around;
-  border-top: 2px solid black;
+  border-top: 5px solid black;
   width: 100%;
   align-items: center;
+}
+
+.score-row{
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 80%;
 }
 
 #answer-input{

@@ -11,6 +11,7 @@ export default class App extends React.Component {
   }
 
   componentDidMount(){
+    sessionStorage.setItem('score', 0);
     this.loadData();
   }
 
@@ -27,13 +28,11 @@ export default class App extends React.Component {
     //     }
     //   )
     //   const rq = await response.json()
-    //   console.log(rq)
     //   this.setState({question: rq});
     // }catch(err){
     //   console.log("There was an error in the HTTP request", err);
     // }
-    console.log('poop');
-    this.setState({question: {"category": "TRANSPORTATION", "QuestionId": "1606-0-22", "airdate": "1991-09-02", "season": "8", "value": "100", "isdailydouble": false, "text": "These flat-bottomed boats were specially designed to travel down early canals", "answer": "barges", "clue_order": "22", "round": "Jeopardy!", "gamenumber": "1606"}})
+    this.setState({question: {"category": "TRANSPORTATION", "QuestionId": "1606-0-22", "airdate": "1991-09-02", "season": "8", "value": "100", "isdailydouble": true, "text": "These flat-bottomed boats were specially designed to travel down early canals", "answer": "barges", "clue_order": "22", "round": "Jeopardy!", "gamenumber": "1606"}})
   }
 
   render(){
@@ -41,7 +40,6 @@ export default class App extends React.Component {
     return (this.state.question &&
       <div className="container-app">
         <div className="container-header">
-          
         </div>
         <QuestionDisplay onNextQuestion={this.loadData} question={this.state.question}/>
         <div className="container-about">
