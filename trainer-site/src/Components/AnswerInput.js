@@ -13,7 +13,7 @@ class AnswerInput extends React.Component {
     }
 
     componentDidUpdate(prevProps) {
-        if (this.props.answer !== prevProps.answer) {
+        if (this.props.question.answer !== prevProps.question.answer) {
             this.answerInputRef.current.value = "";
             this.setState({attempt: "", class: "", showAnswer: false});
         }
@@ -27,14 +27,18 @@ class AnswerInput extends React.Component {
     }
 
     /**
-     * Prevents default form submission and changes class for input in state
-     * based on validity of answer
+     * Prevents default form submission, changes class for input in state,
+     * and adds or subtracts from total score based on validity of answer.
      */
     handleSubmit = (event) => {
+        const correct = this.state.attempt.toLowerCase().trim() === this.props.question.answer.toLowerCase().trim();
+        
         event.preventDefault();
         this.setState({...this.state,
-            class: this.getClassForAnswer(this.state.attempt.toLowerCase().trim() === this.props.answer.toLowerCase().trim())
+            class: this.getClassForAnswer(correct)
         });
+
+        this.props.onSubmit(correct);
     }
     
     getClassForAnswer = (isCorrect) => {
@@ -47,7 +51,7 @@ class AnswerInput extends React.Component {
             showAnswer: !this.state.showAnswer
         }, () => {
             const answerInput = this.answerInputRef.current;
-            answerInput.value = this.state.showAnswer ? this.props.answer : this.state.attempt;
+            answerInput.value = this.state.showAnswer ? this.props.question.answer : this.state.attempt;
         })
     }
 
