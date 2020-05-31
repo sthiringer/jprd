@@ -25,7 +25,7 @@ jobs:
     - uses: actions/upload-artifact@v2
       with:
         name: build-dir
-        path: /home/runner/work/jeopardy-trainer/jeopardy-trainer/trainer-site/build
+        path: /home/runner/work/jprd/jprd/trainer-site/build
   
   #Time to deploy to S3
   deploy:
@@ -36,9 +36,9 @@ jobs:
     - uses: actions/download-artifact@v2
       with:
         name: build-dir
-        path: /home/runner/work/jeopardy-trainer/jeopardy-trainer/trainer-site/build
+        path: /home/runner/work/jprd/jprd/trainer-site/build
     - name: Deploy to s3 bucket
-      run: cd /home/runner/work/jeopardy-trainer/jeopardy-trainer/trainer-site && aws s3 sync ./build s3://jprd.stevethiringer.com
+      run: cd /home/runner/work/jprd/jprd/trainer-site && aws s3 sync ./build s3://jprd.stevethiringer.com
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
