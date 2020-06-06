@@ -281,8 +281,8 @@ label{
 
 input[type=text] {
   outline: none;
-  -moz-appearance: none;
-  -webkit-appearance: none;
+  -moz-appearance: none !important;
+  -webkit-appearance: none !important;
 }
 
 .answer-input-correct{
@@ -319,6 +319,8 @@ input[type=submit], input[type=button] {
   border-radius: 5px;
   border: none;
   cursor: pointer;
+  -moz-appearance: none !important;
+  -webkit-appearance: none !important;
 }
 
 .container-app{
@@ -424,8 +426,8 @@ input[type=submit], input[type=button] {
   width: 20%;
   border-bottom: 1px solid gold;
   color: gold;
-  -moz-appearance: none;
-  -webkit-appearance: none;
+  -moz-appearance: none !important;
+  -webkit-appearance: none !important;
 }
 
 .value-entry-text{
@@ -442,8 +444,8 @@ input[type=submit], input[type=button] {
 .value-wager-btn{
   color: gold !important;
   font-weight: bolder;
-  -moz-appearance: none;
-  -webkit-appearance: none;
+  -moz-appearance: none !important;
+  -webkit-appearance: none !important;
 }
 
 .category{
@@ -510,6 +512,6 @@ input[type=submit], input[type=button] {
   border: none;
   border-bottom: 1px solid black;
   font-size: 2vw;
-  -moz-appearance: none;
-  -webkit-appearance: none;
+  -moz-appearance: none !important;
+  -webkit-appearance: none !important;
 }
