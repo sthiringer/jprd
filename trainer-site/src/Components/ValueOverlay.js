@@ -15,7 +15,6 @@ class ValueOverlay extends Component {
     }
 
     componentDidUpdate(prevProps){
-        console.log(prevProps)
         if(prevProps.question !== this.props.question){
             this.setState({...this.state, visible: true}, () => {
                 setTimeout(() => this.setState({...this.state, visible: false}), 1000);
