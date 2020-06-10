@@ -13,6 +13,8 @@ class MultiplayerHome extends Component {
 
         chat.onopen = (event) => {
             console.log("Chat connection opened");
+            console.log(this.props.location.state.r);
+            chat.send(JSON.stringify({"action": "sendMessage", "type": "INFO", "user": this.props.location.state.u, "roomid": this.props.location.state.r}));
         }
 
         chat.onerror = (event) => {
@@ -20,8 +22,9 @@ class MultiplayerHome extends Component {
         }
 
         chat.onmessage = (event) => {
+            const msg = JSON.parse(event.data);
             this.setState((prevState) => ({
-               messages: [...prevState.messages, event.data]
+               messages: [...prevState.messages, msg]
             }));
         }
 
@@ -35,7 +38,7 @@ class MultiplayerHome extends Component {
     handleSubmit = (event) => {
         event.preventDefault();
 
-        this.state.chat.send(JSON.stringify({"action": "sendMessage", "data": this.state.message}));
+        this.state.chat.send(JSON.stringify({"action": "sendMessage", "type":"MSG", "user": this.props.location.state.u, "roomid": this.props.location.state.r, "data": this.state.message}));
     }
 
     handleInput = (event) => {
@@ -47,7 +50,7 @@ class MultiplayerHome extends Component {
             <div className="container-app">
                 <Header />
                 {this.state.messages.map((msg) => 
-                    <p>{msg}</p>
+                    <p><b>{msg.from + ": "}</b>{msg.msg}</p>
                 )}
                 <form onSubmit={this.handleSubmit}>
                     <input type="text" onChange={this.handleInput}/>

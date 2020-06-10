@@ -515,3 +515,21 @@ input[type=submit], input[type=button] {
   -moz-appearance: none !important;
   -webkit-appearance: none !important;
 }
+
+.container-home{
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.container-choice{
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+}
+
+hr{
+  margin-left: 0;
+  margin-right: 0;
+}

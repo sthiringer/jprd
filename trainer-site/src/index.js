@@ -2,8 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
-import SingleplayerHome from './Components/SingleplayerHome';
-import MultiplayerHome from './Components/MultiplayerHome';
+import SingleplayerHome from './Components/Singleplayer/SingleplayerHome';
+import MultiplayerHome from './Components/Multiplayer/MultiplayerHome';
 import * as serviceWorker from './serviceWorker';
 import {BrowserRouter as Router, Switch, Route} from "react-router-dom";
 
@@ -14,9 +14,7 @@ ReactDOM.render(
                 <SingleplayerHome />
             </Route>
 
-            <Route path="/multiplayer">
-                <MultiplayerHome />
-            </Route>
+            <Route path="/multiplayer" component={MultiplayerHome} />
 
             <Route path="/">
                 <App />
