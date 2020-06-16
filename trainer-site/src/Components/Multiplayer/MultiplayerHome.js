@@ -5,16 +5,35 @@ import Footer from "../Footer.js"
 class MultiplayerHome extends Component {
     constructor(props){
         super(props);
-        this.state = {messages: []};
+        this.state = {messages: [], message:'', chat:null};
+
     }
 
     componentDidMount(){
+        if(this.isAuthorized()){
+            this.connectToChat();
+        }
+    }
+
+    isAuthorized = () => {
+        //Prob should do a server side token check here
+        return this.props.location.state && this.props.location.state.token;
+    }
+
+    connectToChat = () => {
         const chat = new WebSocket("wss://k0bg983q9d.execute-api.us-east-1.amazonaws.com/Test");
 
         chat.onopen = (event) => {
             console.log("Chat connection opened");
-            console.log(this.props.location.state.r);
-            chat.send(JSON.stringify({"action": "sendMessage", "type": "INFO", "user": this.props.location.state.u, "roomid": this.props.location.state.r}));
+            window.onbeforeunload = (event) =>{
+                chat.send(JSON.stringify({"action": "sendMessage", "meta": "TEARDOWN", "user": this.props.location.state.u, "roomid": this.props.location.state.r, "data": null, "token": this.props.location.state.token}));
+                console.log("Page refreshed or closed, cleaning up connection.");
+            }
+            window.onhashchange = (event) =>{
+                chat.send(JSON.stringify({"action": "sendMessage", "meta": "TEARDOWN", "user": this.props.location.state.u, "roomid": this.props.location.state.r, "data": null, "token": this.props.location.state.token}));
+                console.log("Page navigated away from, cleaning up connection.");
+            }
+            chat.send(JSON.stringify({"action": "sendMessage", "meta": "SETUP", "user": this.props.location.state.u, "roomid": this.props.location.state.r, "data": null, "token": this.props.location.state.token}));
         }
 
         chat.onerror = (event) => {
@@ -23,13 +42,16 @@ class MultiplayerHome extends Component {
 
         chat.onmessage = (event) => {
             const msg = JSON.parse(event.data);
-            this.setState((prevState) => ({
-               messages: [...prevState.messages, msg]
-            }));
+            if(msg.meta !== "SETUP" && msg.meta !== "TEARDOWN"){
+                this.setState((prevState) => ({
+                    messages: [...prevState.messages, msg]
+                }));
+            }
         }
 
         chat.onclose = (event) => {
             console.log("Chat connection closed");
+            //chat.send(JSON.stringify({"action": "sendMessage", "meta": "TEARDOWN", "user": this.props.location.state.u, "roomid": this.props.location.state.r, "data": null, "token": this.props.location.state.token}));
         }
 
         this.setState({chat: chat});
@@ -38,7 +60,7 @@ class MultiplayerHome extends Component {
     handleSubmit = (event) => {
         event.preventDefault();
 
-        this.state.chat.send(JSON.stringify({"action": "sendMessage", "type":"MSG", "user": this.props.location.state.u, "roomid": this.props.location.state.r, "data": this.state.message}));
+        this.state.chat.send(JSON.stringify({"action": "sendMessage", "meta":"MSG", "user": this.props.location.state.u, "roomid": this.props.location.state.r, "data": this.state.message, "token": this.props.location.state.token}));
     }
 
     handleInput = (event) => {
@@ -46,7 +68,7 @@ class MultiplayerHome extends Component {
     }
 
     render() {
-        return (
+        return (this.isAuthorized() ? (
             <div className="container-app">
                 <Header />
                 {this.state.messages.map((msg) => 
@@ -58,7 +80,9 @@ class MultiplayerHome extends Component {
                 </form>
                 <Footer />
             </div>
-        );
+        ) : (
+            <p>Please return to the home page and create or join a room to play multiplayer.</p>
+        ));
     }
 }
 

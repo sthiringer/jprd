@@ -26,7 +26,8 @@ class App extends React.Component {
         }
       )
       const res = await response.json()
-      this.props.history.push({pathname: '/multiplayer', state: {u: username, r:res['roomid']}});
+      console.log(res);
+      this.props.history.push({pathname: '/multiplayer', state: {token: res.token, u: username, r:res.roomid}});
     }catch(err){
       console.log("There was an error in the HTTP request", err);
       return false;
@@ -45,8 +46,9 @@ class App extends React.Component {
           body: JSON.stringify({'u':username, 'roomid': r})
         }
       )
-      await response.json()
-      this.props.history.push({pathname: '/multiplayer', state: {u: username, r: r}});
+      const res = await response.json();
+      console.log(res);
+      this.props.history.push({pathname: '/multiplayer', state: {token: res.token, u: username, r: r}});
     }catch(err){
       console.log("There was an error in the HTTP request", err);
       return false;
