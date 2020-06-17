@@ -61,7 +61,7 @@ class AnswerInput extends React.Component {
 
     render() {
         return (<>
-            <form onSubmit={this.handleSubmit}>
+            <form className="answer-form" onSubmit={this.handleSubmit}>
                 <label>
                     {"What is "}
                     <input 

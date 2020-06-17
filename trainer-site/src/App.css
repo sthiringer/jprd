@@ -267,12 +267,13 @@ html, body, #root{
   max-height: 100%;
 }
 
-form{
+.answer-form{
   display: flex;
   flex-flow: column wrap;
   justify-content: space-evenly;
   height: 80%;
   align-items: center;
+  justify-content: flex-end;
 }
 
 label{
@@ -532,4 +533,60 @@ input[type=submit], input[type=button] {
 hr{
   margin-left: 0;
   margin-right: 0;
+}
+
+.container-chat{
+  display: flex;
+  flex-flow: column nowrap;
+  flex: 1 1 0;
+}
+
+.message-display{
+  display: flex;
+  box-sizing: border-box;
+  flex-flow: column nowrap;
+  flex: 9 9 0;
+  border: 5px solid grey;
+  width: 100%;
+  justify-content: flex-end;
+}
+
+.container-chat-input{
+  display: flex;
+  flex-flow: column nowrap;
+  flex: 1 1 0;
+  align-items: center;
+}
+
+.chat-input{
+  width: 100%;
+  box-sizing: border-box;
+  border-right: 5px solid grey;
+  border-left: 5px solid grey;
+  border-bottom: 5px solid grey;
+  border-top: none;
+}
+
+/* QuestionGrid stuff */
+.container-content{
+  display: flex;
+  flex-flow: row nowrap;
+}
+
+.question-grid{
+  display: grid;
+  flex: 2 2 0;
+  grid-auto-flow: column;
+  grid-template-columns:  repeat(6, 150px);
+  grid-template-rows:  repeat(5, 150px);
+  justify-content: center;
+}
+
+.question-child{
+  display: flex;
+  background-color: blue;
+  color: gold;
+  border: 1px solid black;
+  align-items: center;
+  justify-content: center;
 }
