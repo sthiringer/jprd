@@ -590,3 +590,15 @@ hr{
   align-items: center;
   justify-content: center;
 }
+
+.container-players-chat{
+  display: flex;
+  flex-flow: column nowrap;
+}
+
+.container-players{
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: center;
+}

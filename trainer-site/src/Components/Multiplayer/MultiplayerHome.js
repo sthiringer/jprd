@@ -3,6 +3,7 @@ import Header from "../Header.js";
 import Footer from "../Footer.js";
 import QuestionGrid from "./QuestionGrid";
 import ChatDisplay from "./ChatDisplay";
+import PlayerDisplay from "./PlayerDisplay";
 
 let chat = undefined;
 
@@ -10,7 +11,7 @@ class MultiplayerHome extends Component {
     constructor(props){
         super(props);
         chat = new WebSocket("wss://k0bg983q9d.execute-api.us-east-1.amazonaws.com/Test");
-        this.state={messages: [], lastPicked: -1}
+        this.state={messages: [], lastPicked: -1, players: []}
     }
 
     componentDidMount(){
@@ -52,6 +53,10 @@ class MultiplayerHome extends Component {
                     this.handlePick(msg.msg);
                     break;
 
+                case "SETUP":
+                    this.handleJoin(msg.joined, msg.players);
+                    break;
+
                 default:
                     console.log("unknown mesage received")
                     console.log(msg)
@@ -77,6 +82,17 @@ class MultiplayerHome extends Component {
         this.setState({...this.state, lastPicked: pos});
     }
 
+    handleJoin = (player, allPlayers) => {
+        this.setState((prevState) => {
+            if(allPlayers.indexOf(player) === -1){
+                allPlayers = [...allPlayers, player]
+            }
+            return ({...prevState,
+            players: allPlayers
+            })
+        });
+    }
+
     sendMessage = (msg) => {
         chat.send(JSON.stringify({"action": "sendMessage", "meta": "MSG", "user": this.props.location.state.u, "roomid": this.props.location.state.r, "data": msg, "token": this.props.location.state.token}));
     }
@@ -88,7 +104,10 @@ class MultiplayerHome extends Component {
                 <span>{"Your room code: " + this.props.location.state.r}</span>
                 <div className="container-content">
                     <QuestionGrid lastPicked={this.state.lastPicked} onPick={this.sendPick}/>
-                    <ChatDisplay messages={this.state.messages} onSendMessage={this.sendMessage}/>
+                    <div className="container-players-chat">
+                        <PlayerDisplay players={this.state.players}/>
+                        <ChatDisplay messages={this.state.messages} onSendMessage={this.sendMessage}/>
+                    </div>
                 </div>
                 <Footer />
             </div>

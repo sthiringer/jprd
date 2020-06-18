@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<svg width="100%" height="100%" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+ <!-- Created with SVG-edit - https://github.com/SVG-Edit/svgedit-->
+ <g class="layer">
+  <title>Layer 1</title>
+  <ellipse cx="300" cy="172" fill="#000000" id="svg_9" rx="100" ry="52" stroke="#000000" stroke-dasharray="null" stroke-linecap="null" stroke-linejoin="null" stroke-width="0"/>
+  <path d="m150.99968,300.433347l0,-100.466667l49.836605,100.466667l-49.836605,0z" fill="#4c2300" id="svg_1" stroke="#000000" stroke-width="0" transform="rotate(180 175.918 250.2)"/>
+  <path d="m375.216656,275.416662l0,-50.233337l100.466674,50.233337l-100.466674,0z" fill="#4c2300" id="svg_4" stroke="#000000" stroke-width="0" transform="rotate(90 425.45 250.3)"/>
+  <rect fill="#4c2300" height="100" id="svg_5" stroke="#000000" stroke-dasharray="null" stroke-linecap="null" stroke-linejoin="null" stroke-width="0" width="200.400006" x="200" y="200"/>
+  <rect fill="#00007f" height="82" id="svg_6" stroke="#bfbf00" stroke-dasharray="null" stroke-linecap="null" stroke-linejoin="null" stroke-width="4" width="196" x="202" y="210"/>
+  <rect fill="#000000" height="30" id="svg_7" stroke="#000000" stroke-dasharray="null" stroke-linecap="null" stroke-linejoin="null" stroke-width="0" width="200" x="200" y="170"/>
+  <ellipse cx="300" cy="128" fill="#ffffff" id="svg_28" rx="42" ry="10" stroke="#000000" stroke-dasharray="null" stroke-linecap="null" stroke-linejoin="null" stroke-width="0"/>
+  <ellipse cx="300" cy="88" fill="#000000" id="svg_30" rx="42" ry="42" stroke="#000000" stroke-dasharray="null" stroke-linecap="null" stroke-linejoin="null" stroke-width="0"/>
+ </g>
+</svg>
