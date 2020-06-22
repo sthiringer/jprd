@@ -4,7 +4,7 @@ class Question extends Component {
     render() {
         return (
             <div className="question-child" onClick={() => this.props.onPick(this.props.pos)}>
-                <span><b>{"$"+this.props.data.value}</b></span>
+                {this.props.data.value ? (<span><b>{"$"+this.props.data.value}</b></span>) : (<span><b>{this.props.data}</b></span>)}
             </div>
         );
     }

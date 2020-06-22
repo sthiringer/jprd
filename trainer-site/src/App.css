@@ -578,7 +578,7 @@ hr{
   flex: 2 2 0;
   grid-auto-flow: column;
   grid-template-columns:  repeat(6, 150px);
-  grid-template-rows:  repeat(5, 150px);
+  grid-template-rows:  75px repeat(5, 150px);
   justify-content: center;
 }
 
@@ -589,6 +589,7 @@ hr{
   border: 1px solid black;
   align-items: center;
   justify-content: center;
+  text-align: center;
 }
 
 .container-players-chat{
@@ -601,4 +602,15 @@ hr{
   flex-flow: row nowrap;
   align-items: center;
   justify-content: center;
+}
+
+.player{
+  position: relative;
+}
+
+.player-text{
+  position: absolute;
+  top: 70%;
+  left: 50%;
+  color: white;
 }

@@ -11,12 +11,50 @@ class MultiplayerHome extends Component {
     constructor(props){
         super(props);
         chat = new WebSocket("wss://k0bg983q9d.execute-api.us-east-1.amazonaws.com/Test");
-        this.state={messages: [], lastPicked: -1, players: []}
+        this.state={messages: [], lastPicked: -1, players: [], gameData:undefined}
     }
 
     componentDidMount(){
         if(this.isAuthorized()){
+            this.getGame();
             this.connectToChat();
+        }
+    }
+
+    compareQuestion(a, b){
+        let valueA = parseInt(a.value);
+        let valueB = parseInt(b.value);
+
+        if(valueA > valueB){
+            return 1;
+        }else if(valueA < valueB){
+            return -1;
+        }else{
+            return 0;
+        }
+    }
+
+    formatGame = (game) => {
+        for(let category of game){
+            category.questions.sort(this.compareQuestion)
+        }
+        return game;
+    }
+
+    getGame = async () => {
+        try{
+          const response = await fetch(
+            "https://t4d66tek8f.execute-api.us-east-1.amazonaws.com/prod/game",
+            {
+              method: 'POST',
+              headers: {'Content-Type': 'text/plain'}
+            }
+          )
+          const res = await response.json()
+          const game = this.formatGame(res);
+          this.setState({...this.state, gameData:game})
+        }catch(err){
+          console.log("There was an error in the HTTP request", err);
         }
     }
 
@@ -88,7 +126,7 @@ class MultiplayerHome extends Component {
                 allPlayers = [...allPlayers, player]
             }
             return ({...prevState,
-            players: allPlayers
+                players: allPlayers
             })
         });
     }
@@ -98,12 +136,12 @@ class MultiplayerHome extends Component {
     }
 
     render() {
-        return (this.isAuthorized() ? (
+        return (this.isAuthorized() && this.state.gameData ? (
             <div className="container-app">
                 <Header />
                 <span>{"Your room code: " + this.props.location.state.r}</span>
                 <div className="container-content">
-                    <QuestionGrid lastPicked={this.state.lastPicked} onPick={this.sendPick}/>
+                    <QuestionGrid gameData={this.state.gameData} lastPicked={this.state.lastPicked} onPick={this.sendPick}/>
                     <div className="container-players-chat">
                         <PlayerDisplay players={this.state.players}/>
                         <ChatDisplay messages={this.state.messages} onSendMessage={this.sendMessage}/>
