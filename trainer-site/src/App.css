@@ -571,11 +571,15 @@ hr{
 .container-content{
   display: flex;
   flex-flow: row nowrap;
+  justify-content: space-around;
+}
+
+.game-board{
+    position: relative;
 }
 
 .question-grid{
   display: grid;
-  flex: 2 2 0;
   grid-auto-flow: column;
   grid-template-columns:  repeat(6, 150px);
   grid-template-rows:  75px repeat(5, 150px);
@@ -614,3 +618,30 @@ hr{
   left: 50%;
   color: white;
 }
+
+.loading-text{
+  align-self: center;
+  text-align: center;
+}
+
+.question-slider{
+  background-color: darkblue;
+  position: absolute;
+  bottom: 0;
+  overflow-y: hidden;
+  height: 0px; /*will need to make this non-static*/
+  border-radius: 25px 25px 0px 0px;
+
+  transition-property: all;
+  transition-duration: 0.5s;
+  transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
+  width: calc(150*6px);
+}
+
+.question-slider.opened{
+  height: 815px;
+  display: flex;
+  flex-flow: column nowrap;
+}
+
+

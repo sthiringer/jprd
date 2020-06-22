@@ -11,7 +11,7 @@ class MultiplayerHome extends Component {
     constructor(props){
         super(props);
         chat = new WebSocket("wss://k0bg983q9d.execute-api.us-east-1.amazonaws.com/Test");
-        this.state={messages: [], lastPicked: -1, players: [], gameData:undefined}
+        this.state={messages: [], lastPicked: undefined, players: [], gameData:undefined}
     }
 
     componentDidMount(){
@@ -117,7 +117,9 @@ class MultiplayerHome extends Component {
     }
 
     handlePick = (pos) => {
-        this.setState({...this.state, lastPicked: pos});
+        //Trigger question sliding up from bottom of board, covering everything
+        this.setState({...this.state, lastPicked: pos, answering: true});
+        setTimeout(() => this.setState({...this.state, answering: false}), 15000);
     }
 
     handleJoin = (player, allPlayers) => {
@@ -136,21 +138,30 @@ class MultiplayerHome extends Component {
     }
 
     render() {
-        return (this.isAuthorized() && this.state.gameData ? (
-            <div className="container-app">
-                <Header />
-                <span>{"Your room code: " + this.props.location.state.r}</span>
-                <div className="container-content">
-                    <QuestionGrid gameData={this.state.gameData} lastPicked={this.state.lastPicked} onPick={this.sendPick}/>
-                    <div className="container-players-chat">
-                        <PlayerDisplay players={this.state.players}/>
-                        <ChatDisplay messages={this.state.messages} onSendMessage={this.sendMessage}/>
+        return (this.isAuthorized() ? (
+            this.state.gameData ? (
+                <div className="container-app">
+                    <Header />
+                    <span>{"Your room code: " + this.props.location.state.r}</span>
+                    <div className="container-content">
+                        <QuestionGrid gameData={this.state.gameData} 
+                        lastPicked={this.state.lastPicked} 
+                        answering={this.state.answering} 
+                        onPick={this.sendPick}
+                        
+                        />
+                        <div className="container-players-chat">
+                            <PlayerDisplay players={this.state.players}/>
+                            <ChatDisplay messages={this.state.messages} onSendMessage={this.sendMessage}/>
+                        </div>
                     </div>
+                    <Footer />
                 </div>
-                <Footer />
-            </div>
+            ) : (
+                <span className="loading-text">Game loading...</span>
+            )
         ) : (
-            <p>Please return to the home page and create or join a room to play multiplayer.</p>
+            <span>Please return to the home page and create or join a room to play multiplayer.</span>
         ));
     }
 }
