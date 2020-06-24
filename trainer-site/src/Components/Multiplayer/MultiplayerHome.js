@@ -6,6 +6,7 @@ import ChatDisplay from "./ChatDisplay";
 import PlayerDisplay from "./PlayerDisplay";
 
 let chat = undefined;
+const QUESTION_VALUES = [200, 400, 600, 800, 1000]
 
 class MultiplayerHome extends Component {
     constructor(props){
@@ -37,6 +38,7 @@ class MultiplayerHome extends Component {
     formatGame = (game) => {
         for(let category of game){
             category.questions.sort(this.compareQuestion)
+            category.questions.forEach((question, i) => question.value = QUESTION_VALUES[i])
         }
         return game;
     }
@@ -47,7 +49,8 @@ class MultiplayerHome extends Component {
             "https://t4d66tek8f.execute-api.us-east-1.amazonaws.com/prod/game",
             {
               method: 'POST',
-              headers: {'Content-Type': 'text/plain'}
+              headers: {'Content-Type': 'text/plain'},
+              body: this.props.location.state.token
             }
           )
           const res = await response.json()
@@ -58,7 +61,7 @@ class MultiplayerHome extends Component {
         }
     }
 
-    connectToChat =  () => {
+    connectToChat = () => {
         chat.onopen = (event) => {
             console.log("Chat connection opened");
             window.onbeforeunload = (event) =>{

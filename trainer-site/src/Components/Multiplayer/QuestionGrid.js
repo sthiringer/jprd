@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {CircularProgressbar, buildStyles} from 'react-circular-progressbar'
 import Question from './Question';
+import ChangingProgressProvider from './ChangingProgressProvider';
 import 'react-circular-progressbar/dist/styles.css'
 
 class QuestionGrid extends Component {
@@ -40,14 +41,22 @@ class QuestionGrid extends Component {
             const catName = gameData[cat].categoryname
             
             return(<div className="question-slider opened">
-                <CircularProgressbar
-                    value={0}
-                    strokeWidth={50}
-                    styles={buildStyles({
-                        strokeLinecap: "butt"
-                      })}
-                />
                 <div className="category">
+                    <div className="container-progresscircle">
+                        <ChangingProgressProvider values={Array.from(Array(15).keys()).reverse()}>
+                            {percentage=> <CircularProgressbar
+                                value={percentage}
+                                counterClockwise={true}
+                                maxValue={15}
+                                strokeWidth={50}
+                                styles={buildStyles({
+                                    strokeLinecap: "butt",
+                                    pathColor: `rgba(255, 215, 0)`,
+                                    backgroundColor: '#3e98c7',
+                                })}
+                            />}
+                        </ChangingProgressProvider>
+                    </div>
                     <span className="category-text">{catName}</span>
                 </div>
                 <div className="clue">

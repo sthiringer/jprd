@@ -469,7 +469,7 @@ input[type=submit], input[type=button] {
 
 .clue{
   display: flex;
-  flex: 1 1 auto;
+  flex: 2 2 auto;
   flex-flow: column nowrap;
   justify-content: space-around;
   width: 100%;
@@ -588,7 +588,7 @@ hr{
 
 .question-child{
   display: flex;
-  background-color: blue;
+  background-color: #00007f;
   color: gold;
   border: 1px solid black;
   align-items: center;
@@ -612,11 +612,27 @@ hr{
   position: relative;
 }
 
-.player-text{
+.container-player-text{
+  display: flex;
+  flex-flow: column nowrap;
   position: absolute;
-  top: 70%;
-  left: 50%;
+  top: 68%;
+  left: 18%;
+  width: 191px;
+  height: 77px;
+  justify-content: space-evenly;
+  align-items: center;
+  text-align: center;
+}
+
+.player-name{
   color: white;
+  font-weight: bold;
+}
+
+.player-score{
+  color: white;
+  font-weight: bold;
 }
 
 .loading-text{
@@ -625,7 +641,7 @@ hr{
 }
 
 .question-slider{
-  background-color: darkblue;
+  background-color: #00007f;
   position: absolute;
   bottom: 0;
   overflow-y: hidden;
@@ -642,6 +658,16 @@ hr{
   height: 815px;
   display: flex;
   flex-flow: column nowrap;
+}
+
+.container-progresscircle{
+  height: 75px;
+  width: 75px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin-top: 25px;
+  margin-right: 25px;
 }
 
 

@@ -7,7 +7,10 @@ class PlayerDisplay extends Component {
             <div className="container-players">
                 {this.props.players.map((player) => 
                     <div className="player">
-                        <span className="player-text">{player}</span>
+                        <div className="container-player-text">
+                            <span className="player-name">{player}</span>
+                            <span className="player-score">{"$"+0}</span>
+                        </div>
                         <object data={PlayerIcon}><span>{player}</span></object>
                     </div>
                 )}
