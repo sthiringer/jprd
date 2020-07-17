@@ -1,0 +1,37 @@
+.containerPlayers{
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: center;
+}
+
+.containerPlayerText{
+    display: flex;
+    flex-flow: column nowrap;
+    position: absolute;
+    top: 68%;
+    left: 18%;
+    width: 191px;
+    height: 77px;
+    justify-content: space-evenly;
+    align-items: center;
+    text-align: center;
+  }
+
+  .player{
+    position: relative;
+  }
+  
+  .player.picking{
+    outline: 5px solid gold;
+  }
+
+  .playerName{
+    color: white;
+    font-weight: bold;
+  }
+  
+  .playerScore{
+    color: white;
+    font-weight: bold;
+  }

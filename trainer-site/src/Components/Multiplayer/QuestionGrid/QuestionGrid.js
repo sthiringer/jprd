@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import {CircularProgressbar, buildStyles} from 'react-circular-progressbar'
-import Question from './Question';
-import ChangingProgressProvider from './ChangingProgressProvider';
+import Question from '../Question/Question';
+import AnswerInput from '../AnswerInput/AnswerInput';
+import ChangingProgressProvider from '../ChangingProgressProvider/ChangingProgressProvider';
 import 'react-circular-progressbar/dist/styles.css'
+import styles from './QuestionGrid.module.css';
 
 class QuestionGrid extends Component {
 
@@ -32,17 +34,23 @@ class QuestionGrid extends Component {
         } 
     }
 
+    handleSubmit = (questionid, answer, time) => {
+        this.props.onAnswer(questionid, answer, time);
+    }
+
     getQuestionDisplay = () => {
+        console.log(this.props.players[this.props.user])
         if(this.props.answering){
+            console.log(this.props.gameData);
             const gameData = this.props.gameData;
             const cat = Math.floor(this.props.lastPicked/5);
             const question = this.props.lastPicked%5;
             const data = gameData[cat].questions[question]
             const catName = gameData[cat].categoryname
             
-            return(<div className="question-slider opened">
-                <div className="category">
-                    <div className="container-progresscircle">
+            return(<div className={`${styles.questionSlider} ${styles.opened}`}>
+                <div className={styles.category}>
+                    <div className={styles.containerProgressCircle}>
                         <ChangingProgressProvider values={Array.from(Array(15).keys()).reverse()}>
                             {percentage=> <CircularProgressbar
                                 value={percentage}
@@ -57,30 +65,30 @@ class QuestionGrid extends Component {
                             />}
                         </ChangingProgressProvider>
                     </div>
-                    <span className="category-text">{catName}</span>
+                    <span className={styles.categoryText}>{catName}</span>
                 </div>
-                <div className="clue">
-                    <span className="clue-text">{data.text}</span>
+                <div className={styles.clue}>
+                    <span className={styles.clueText}>{data.text}</span>
                 </div>
-                <div className="answer">
-                    <div className="score-row">
-                        <span className="user-score">{"Your total: $" + data.userScore}</span>
-                        <span className="clue-value">{"This clue: $" + data.value}</span>
+                <div className={styles.answer}>
+                    <div className={styles.scoreRow}>
+                        <span className={styles.userScore}>{"Your total: $" + this.props.players[this.props.user]['M']['score']['N']}</span>
+                        <span className={styles.clueValue}>{"This clue: $" + data.value}</span>
                     </div>
+                    <AnswerInput questionid={data.questionid} onSubmit={this.handleSubmit} />
                 </div>
             </div>)
         
         }else{
-            return(<div className="question-slider">
-            </div>)
+            return(<div className={styles.questionSlider} />)
         }
     }
 
     render() {
 
         return (
-            <div className="game-board">
-                <div className="question-grid">
+            <div className={styles.gameBoard}>
+                <div className={styles.questionGrid}>
                     {this.getBoard()}
                 </div>
                 {this.getQuestionDisplay()}

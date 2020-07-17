@@ -1,7 +1,7 @@
 import React from 'react';
 import {Link, withRouter} from "react-router-dom";
-import Header from "./Components/Header.js"
-import Footer from "./Components/Footer.js"
+import Header from "../Header/Header.js"
+import Footer from "../Footer/Footer.js"
 import './App.css';
 
 class App extends React.Component {
@@ -27,7 +27,7 @@ class App extends React.Component {
       )
       const res = await response.json()
       console.log(res);
-      this.props.history.push({pathname: '/multiplayer', state: {token: res.token, u: username, r:res.roomid}});
+      this.props.history.push({pathname: '/multiplayer', state: {token: res.token, u: username, r:res.roomid, c:true}});
     }catch(err){
       console.log("There was an error in the HTTP request", err);
       return false;
@@ -48,7 +48,7 @@ class App extends React.Component {
       )
       const res = await response.json();
       console.log(res);
-      this.props.history.push({pathname: '/multiplayer', state: {token: res.token, u: username, r: r}});
+      this.props.history.push({pathname: '/multiplayer', state: {token: res.token, u: username, r: r, c: false}});
     }catch(err){
       console.log("There was an error in the HTTP request", err);
       return false;

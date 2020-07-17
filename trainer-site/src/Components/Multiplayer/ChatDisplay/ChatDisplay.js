@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import styles from './ChatDisplay.module.css';
 
 class ChatDisplay extends Component {
     constructor(props){
@@ -20,15 +21,15 @@ class ChatDisplay extends Component {
 
     render() {
         return (
-            <div className="container-chat">
-                <div className="message-display">
+            <div className={styles.containerChat}>
+                <div className={styles.messageDisplay}>
                     {this.props.messages.map((data) => 
-                        <span className="chat-message"><b>{data.from+": "}</b>{data.msg}</span>
+                        <span className={styles.chatMessage}><b>{data.from+": "}</b>{data.msg}</span>
                     )}
                 </div>
-                <form className="container-chat-input" onSubmit={this.handleSubmit}>
-                    <input className="chat-input" type="text" onChange={this.handleInput} ref={this.inputRef}/>
-                    <input className="chat-submit-btn" type="submit" value="Send Message"/>
+                <form className={styles.containerChatInput} onSubmit={this.handleSubmit}>
+                    <input className={styles.chatInput} type="text" onChange={this.handleInput} ref={this.inputRef}/>
+                    <input className={styles.chatSubmitBtn} type="submit" value="Send Message"/>
                 </form>
             </div>
         );

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import QuestionDisplay from "./QuestionDisplay";
-import Header from "../Header.js"
-import Footer from "../Footer.js"
+import Header from "../Global/Header/Header.js"
+import Footer from "../Global/Footer/Footer.js"
 
 class SingleplayerHome extends Component {
     render() {

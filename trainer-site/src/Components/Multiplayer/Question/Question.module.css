@@ -1,0 +1,9 @@
+.questionChild{
+    display: flex;
+    background-color: #00007f;
+    color: gold;
+    border: 1px solid black;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}

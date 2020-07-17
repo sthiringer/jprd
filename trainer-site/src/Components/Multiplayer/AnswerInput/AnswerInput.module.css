@@ -1,0 +1,30 @@
+.answerForm{
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: space-evenly;
+    height: 80%;
+    align-items: center;
+}
+
+.answerInput{
+    border: none;
+    border-bottom: 1px solid white;
+    color: white;
+    background-color: #00007f;
+}
+
+.buttonRow{
+    display: flex;
+    flex-flow: row nowrap;
+    width: 50%;
+    height: 20%;
+    justify-content: space-evenly;
+}
+
+.labelTextBefore{
+    color: white;
+}
+
+.labelTextAfter{
+    color: white;
+}

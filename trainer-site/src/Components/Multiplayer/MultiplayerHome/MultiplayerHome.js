@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import Header from "../Header.js";
-import Footer from "../Footer.js";
-import QuestionGrid from "./QuestionGrid";
-import ChatDisplay from "./ChatDisplay";
-import PlayerDisplay from "./PlayerDisplay";
+import Header from "../../Global/Header/Header.js";
+import Footer from "../../Global/Footer/Footer.js";
+import QuestionGrid from "../QuestionGrid/QuestionGrid";
+import ChatDisplay from "../ChatDisplay/ChatDisplay";
+import PlayerDisplay from "../PlayerDisplay/PlayerDisplay";
+import styles from './MultiplayerHome.module.css';
 
 let chat = undefined;
 const QUESTION_VALUES = [200, 400, 600, 800, 1000]
@@ -12,7 +13,7 @@ class MultiplayerHome extends Component {
     constructor(props){
         super(props);
         chat = new WebSocket("wss://k0bg983q9d.execute-api.us-east-1.amazonaws.com/Test");
-        this.state={messages: [], lastPicked: undefined, players: [], gameData:undefined}
+        this.state={picking: undefined, messages: [], lastPicked: undefined, players: {}, started: false, gameData:undefined}
     }
 
     componentDidMount(){
@@ -20,6 +21,19 @@ class MultiplayerHome extends Component {
             this.getGame();
             this.connectToChat();
         }
+    }
+
+    sendWSMessage = (meta, data) => {
+        return chat.send(
+            JSON.stringify({
+                "action": "sendMessage", 
+                "meta": meta, 
+                "user": this.props.location.state.u, 
+                "roomid": this.props.location.state.r, 
+                "data": data, 
+                "token": this.props.location.state.token
+            })
+        );
     }
 
     compareQuestion(a, b){
@@ -65,14 +79,14 @@ class MultiplayerHome extends Component {
         chat.onopen = (event) => {
             console.log("Chat connection opened");
             window.onbeforeunload = (event) =>{
-                chat.send(JSON.stringify({"action": "sendMessage", "meta": "TEARDOWN", "user": this.props.location.state.u, "roomid": this.props.location.state.r, "data": null, "token": this.props.location.state.token}));
+                this.sendWSMessage("TEARDOWN", null);
                 console.log("Page refreshed or closed, cleaning up connection.");
             }
             window.onhashchange = (event) =>{
-                chat.send(JSON.stringify({"action": "sendMessage", "meta": "TEARDOWN", "user": this.props.location.state.u, "roomid": this.props.location.state.r, "data": null, "token": this.props.location.state.token}));
+                this.sendWSMessage("TEARDOWN", null);
                 console.log("Page navigated away from, cleaning up connection.");
             }
-            chat.send(JSON.stringify({"action": "sendMessage", "meta": "SETUP", "user": this.props.location.state.u, "roomid": this.props.location.state.r, "data": null, "token": this.props.location.state.token}));
+            this.sendWSMessage("SETUP", null);
         }
 
         chat.onerror = (event) => {
@@ -98,6 +112,14 @@ class MultiplayerHome extends Component {
                     this.handleJoin(msg.joined, msg.players);
                     break;
 
+                case "START":
+                    this.handleStart(msg.from)
+                    break;
+
+                case "VALIDATE":
+                    this.handleChangeTurn(msg)
+                    break;
+
                 default:
                     console.log("unknown mesage received")
                     console.log(msg)
@@ -115,20 +137,30 @@ class MultiplayerHome extends Component {
         return this.props.location.state && this.props.location.state.token;
     }
 
-    sendPick = (pos) => {
-        chat.send(JSON.stringify({"action": "sendMessage", "meta": "PICK", "user": this.props.location.state.u, "roomid": this.props.location.state.r, "data": pos, "token": this.props.location.state.token}));
+    sendPick = (pos, value) => {
+        if(this.props.location.state.u === this.state.picking){
+            this.sendWSMessage("PICK", [pos, value]);
+        }
     }
 
-    handlePick = (pos) => {
+    handlePick = (data) => {
+        //data[0] = position of q on board, [1] = value of q on board
         //Trigger question sliding up from bottom of board, covering everything
-        this.setState({...this.state, lastPicked: pos, answering: true});
-        setTimeout(() => this.setState({...this.state, answering: false}), 15000);
+        this.setState((prevState) => ({...prevState, lastPicked: data[0], answering: true, prevPicker: prevState.picking, picking: undefined}));
+        setTimeout(() => {
+            this.setState({...this.state, answering: false});
+            //Validate answers here and return correct answerer (or previous picker) for next turn
+            if(this.props.location.state.c){
+                //This is hacky, validaiton should automatically be performed serverside
+                this.sendWSMessage("VALIDATE", data[1])
+            }
+        }, 15000);
     }
 
     handleJoin = (player, allPlayers) => {
         this.setState((prevState) => {
-            if(allPlayers.indexOf(player) === -1){
-                allPlayers = [...allPlayers, player]
+            if(!(player in allPlayers)){
+                allPlayers = {...allPlayers, player}
             }
             return ({...prevState,
                 players: allPlayers
@@ -136,32 +168,66 @@ class MultiplayerHome extends Component {
         });
     }
 
-    sendMessage = (msg) => {
-        chat.send(JSON.stringify({"action": "sendMessage", "meta": "MSG", "user": this.props.location.state.u, "roomid": this.props.location.state.r, "data": msg, "token": this.props.location.state.token}));
+    handleStart = (firstPlayer) => {
+        this.setState({...this.state, picking: firstPlayer, started: true})
+    }
+
+    handleChangeTurn = (msg) => {
+        //Select next picker and update scores
+        this.setState((prevState) => {
+            let updatedScores = prevState.players
+            //This feels real ugly
+            for(const item of msg.newScores){
+                for(const key in item){
+                    updatedScores[key]['M']['score']['N'] = item[key];
+                }
+            }
+            return ({...prevState,
+                picking: (msg.nextPlayer ? msg.nextPlayer : prevState.prevPicker),
+                players: updatedScores
+            })
+        });
+    }
+
+    sendChatMessage = (msg) => {
+        this.sendWSMessage("MSG", msg);
+    }
+
+    startGame = () => {
+        this.sendWSMessage("START", null);
+    }
+
+    handleAnswer = (questionid, answer, time) => {
+        const data={questionid: questionid, answer: answer, time: time};
+        this.sendWSMessage("ANSWER", data);
     }
 
     render() {
         return (this.isAuthorized() ? (
             this.state.gameData ? (
-                <div className="container-app">
+                <div className={styles.containerApp}>
                     <Header />
                     <span>{"Your room code: " + this.props.location.state.r}</span>
-                    <div className="container-content">
+                    {this.props.location.state.c && !this.state.started && <button onClick={this.startGame}/>}
+                    <div className={styles.containerContent}>
                         <QuestionGrid gameData={this.state.gameData} 
                         lastPicked={this.state.lastPicked} 
                         answering={this.state.answering} 
                         onPick={this.sendPick}
-                        
+                        onAnswer={this.handleAnswer}
+                        picking={this.state.picking}
+                        players={this.state.players}
+                        user={this.props.location.state.u}
                         />
-                        <div className="container-players-chat">
-                            <PlayerDisplay players={this.state.players}/>
-                            <ChatDisplay messages={this.state.messages} onSendMessage={this.sendMessage}/>
+                        <div className={styles.containerPlayersChat}>
+                            <PlayerDisplay players={this.state.players} picking={this.state.picking}/>
+                            <ChatDisplay messages={this.state.messages} onSendMessage={this.sendChatMessage}/>
                         </div>
                     </div>
                     <Footer />
                 </div>
             ) : (
-                <span className="loading-text">Game loading...</span>
+                <span className={styles.loadingText}>Game loading...</span>
             )
         ) : (
             <span>Please return to the home page and create or join a room to play multiplayer.</span>

@@ -1,0 +1,22 @@
+.containerApp{
+    display: flex;
+    flex-flow: column nowrap;
+    height: 100%;
+    justify-content: center;
+}
+
+.containerContent{
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-around;
+}
+
+.containerPlayersChat{
+    display: flex;
+    flex-flow: column nowrap;
+}
+
+.loadingText{
+    align-self: center;
+    text-align: center;
+}

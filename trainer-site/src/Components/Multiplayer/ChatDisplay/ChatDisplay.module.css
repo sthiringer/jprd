@@ -1,0 +1,39 @@
+.containerChat{
+    display: flex;
+    flex-flow: column nowrap;
+    flex: 1 1 0;
+}
+
+.messageDisplay{
+    display: flex;
+    box-sizing: border-box;
+    flex-flow: column nowrap;
+    flex: 9 9 0;
+    border: 5px solid grey;
+    width: 100%;
+    justify-content: flex-end;
+}
+
+.chatMessage{
+    color: darkred;
+}
+
+.containerChatInput{
+    display: flex;
+    flex-flow: column nowrap;
+    flex: 1 1 0;
+    align-items: center;
+}
+  
+.chatInput{
+    width: 100%;
+    box-sizing: border-box;
+    border-right: 5px solid grey;
+    border-left: 5px solid grey;
+    border-bottom: 5px solid grey;
+    border-top: none;
+}
+
+.chatSubmitBtn{
+    color: darkblue;
+}

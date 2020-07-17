@@ -1,0 +1,100 @@
+.gameBoard{
+    position: relative;
+}
+
+.questionGrid{
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-columns:  repeat(6, 150px);
+    grid-template-rows:  75px repeat(5, 150px);
+    justify-content: center;
+}
+
+  
+.questionSlider{
+    background-color: #00007f;
+    position: absolute;
+    bottom: 0;
+    overflow-y: hidden;
+    height: 0px; /*will need to make this non-static*/
+    border-radius: 25px 25px 0px 0px;
+  
+    transition-property: all;
+    transition-duration: 0.5s;
+    transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
+    width: calc(150*6px);
+}
+  
+.questionSlider.opened{
+    height: 815px;
+    display: flex;
+    flex-flow: column nowrap;
+}
+
+.category{
+    display: flex;
+    flex: 1 1 auto;
+    flex-flow: column nowrap;
+    justify-content: space-around;
+    width: 100%;
+    align-items: center;
+    position: relative;
+}
+  
+.containerProgressCircle{
+    width: 75px;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.categoryText{
+    font-weight: bold;
+    text-align: center;
+    font-size: 4vw;
+    width: 80%;
+    color: white;
+}
+  
+.clue{
+    display: flex;
+    flex: 8 8 auto;
+    flex-flow: column nowrap;
+    justify-content: space-around;
+    width: 100%;
+    align-items: center;
+}
+
+.clueText{
+    text-align: center;
+    font-size: 2vw;
+    width: 50%;
+    color: white;
+}
+
+.answer{
+    display: flex;
+    flex: 1 1 auto;
+    flex-flow: column nowrap;
+    justify-content: space-around;
+    width: 100%;
+    align-items: center;
+}
+
+.scoreRow{
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 80%;
+}
+
+.userScore{
+    font-size: 1vw !important;
+    color: white;
+}
+
+.clueValue{
+    font-size: 1vw !important;
+    color: white;
+}
