@@ -146,7 +146,7 @@ class MultiplayerHome extends Component {
     handlePick = (data) => {
         //data[0] = position of q on board, [1] = value of q on board
         //Trigger question sliding up from bottom of board, covering everything
-        this.setState((prevState) => ({...prevState, lastPicked: data[0], answering: true, prevPicker: prevState.picking, picking: undefined}));
+        this.setState((prevState) => ({...prevState, lastPicked: data[0], answering: true, prevPicker: prevState.picking}));
         setTimeout(() => {
             this.setState({...this.state, answering: false});
             //Validate answers here and return correct answerer (or previous picker) for next turn
