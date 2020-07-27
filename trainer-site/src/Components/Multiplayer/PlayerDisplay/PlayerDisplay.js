@@ -16,7 +16,7 @@ class PlayerDisplay extends Component {
                     <div className={this.getPlayerClass(player)}>
                         <div className={styles.containerPlayerText}>
                             <span className={styles.playerName}>{player}</span>
-                            <span className={styles.playerScore}>{"$"+this.props.players[player]['M']['score']['N']}</span>
+                            <span className={styles.playerScore}>{"$"+this.props.players[player]['score']}</span>
                         </div>
                         <object data={PlayerIcon}><span>{player}</span></object>
                     </div>

@@ -11,6 +11,7 @@ class QuestionGrid extends Component {
     getBoard = () => {
         let toRet = [];
         const gameData = this.props.gameData;
+        console.log(gameData)
 
         for(let i = 0; i < 6; i++){
             toRet.push(<Question key={(i+1)*100} data={gameData[i].categoryname}/>)
@@ -72,7 +73,7 @@ class QuestionGrid extends Component {
                 </div>
                 <div className={styles.answer}>
                     <div className={styles.scoreRow}>
-                        <span className={styles.userScore}>{"Your total: $" + this.props.players[this.props.user]['M']['score']['N']}</span>
+                        <span className={styles.userScore}>{"Your total: $" + this.props.players[this.props.user]['score']}</span>
                         <span className={styles.clueValue}>{"This clue: $" + data.value}</span>
                     </div>
                     <AnswerInput questionid={data.questionid} onSubmit={this.handleSubmit} />

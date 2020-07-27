@@ -52,7 +52,9 @@ class MultiplayerHome extends Component {
     formatGame = (game) => {
         for(let category of game){
             category.questions.sort(this.compareQuestion)
-            category.questions.forEach((question, i) => question.value = QUESTION_VALUES[i])
+            category.questions.forEach((question, i) =>{
+                question.value = QUESTION_VALUES[i]
+            })
         }
         return game;
     }
@@ -69,6 +71,7 @@ class MultiplayerHome extends Component {
           )
           const res = await response.json()
           const game = this.formatGame(res);
+          console.log(game);
           this.setState({...this.state, gameData:game})
         }catch(err){
           console.log("There was an error in the HTTP request", err);
@@ -137,8 +140,8 @@ class MultiplayerHome extends Component {
         return this.props.location.state && this.props.location.state.token;
     }
 
-    sendPick = (pos, value) => {
-        if(this.props.location.state.u === this.state.picking){
+    sendPick = (pos, value, qid) => {
+        if(qid && this.props.location.state.u === this.state.picking){
             this.sendWSMessage("PICK", [pos, value]);
         }
     }
@@ -174,17 +177,19 @@ class MultiplayerHome extends Component {
 
     handleChangeTurn = (msg) => {
         //Select next picker and update scores
+        console.log(msg.gameData)
         this.setState((prevState) => {
             let updatedScores = prevState.players
             //This feels real ugly
             for(const item of msg.newScores){
                 for(const key in item){
-                    updatedScores[key]['M']['score']['N'] = item[key];
+                    updatedScores[key]['score'] = item[key];
                 }
             }
             return ({...prevState,
                 picking: (msg.nextPlayer ? msg.nextPlayer : prevState.prevPicker),
-                players: updatedScores
+                players: updatedScores,
+                gameData: this.formatGame(msg.gameData)
             })
         });
     }
