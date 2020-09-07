@@ -11,7 +11,6 @@ class QuestionGrid extends Component {
     getBoard = () => {
         let toRet = [];
         const gameData = this.props.gameData;
-        console.log(gameData)
 
         for(let i = 0; i < 6; i++){
             toRet.push(<Question key={(i+1)*100} data={gameData[i].categoryname}/>)
@@ -39,50 +38,66 @@ class QuestionGrid extends Component {
         this.props.onAnswer(questionid, answer, time);
     }
 
-    getQuestionDisplay = () => {
-        console.log(this.props.players[this.props.user])
+    getDisplay = () => {
         if(this.props.answering){
-            console.log(this.props.gameData);
-            const gameData = this.props.gameData;
-            const cat = Math.floor(this.props.lastPicked/5);
-            const question = this.props.lastPicked%5;
-            const data = gameData[cat].questions[question]
-            const catName = gameData[cat].categoryname
-            
-            return(<div className={`${styles.questionSlider} ${styles.opened}`}>
-                <div className={styles.category}>
-                    <div className={styles.containerProgressCircle}>
-                        <ChangingProgressProvider values={Array.from(Array(15).keys()).reverse()}>
-                            {percentage=> <CircularProgressbar
-                                value={percentage}
-                                counterClockwise={true}
-                                maxValue={15}
-                                strokeWidth={50}
-                                styles={buildStyles({
-                                    strokeLinecap: "butt",
-                                    pathColor: `rgba(255, 215, 0)`,
-                                    backgroundColor: '#3e98c7',
-                                })}
-                            />}
-                        </ChangingProgressProvider>
-                    </div>
-                    <span className={styles.categoryText}>{catName}</span>
-                </div>
-                <div className={styles.clue}>
-                    <span className={styles.clueText}>{data.text}</span>
-                </div>
-                <div className={styles.answer}>
-                    <div className={styles.scoreRow}>
-                        <span className={styles.userScore}>{"Your total: $" + this.props.players[this.props.user]['score']}</span>
-                        <span className={styles.clueValue}>{"This clue: $" + data.value}</span>
-                    </div>
-                    <AnswerInput questionid={data.questionid} onSubmit={this.handleSubmit} />
-                </div>
-            </div>)
-        
+            return this.getQuestionDisplay();
+        }else if(this.props.summary){
+            return this.getAnswerSummary();
         }else{
-            return(<div className={styles.questionSlider} />)
+            return (<div className={styles.questionSlider} />)
         }
+    }
+
+    getQuestionDisplay = () => {
+        const gameData = this.props.gameData;
+        const cat = Math.floor(this.props.lastPicked/5);
+        const question = this.props.lastPicked%5;
+        const data = gameData[cat].questions[question]
+        const catName = gameData[cat].categoryname
+        
+        return(<div className={`${styles.questionSlider} ${styles.opened}`}>
+            <div className={styles.category}>
+                <div className={styles.containerProgressCircle}>
+                    <ChangingProgressProvider values={Array.from(Array(15).keys()).reverse()}>
+                        {percentage=> <CircularProgressbar
+                            value={percentage}
+                            counterClockwise={true}
+                            maxValue={15}
+                            strokeWidth={50}
+                            styles={buildStyles({
+                                strokeLinecap: "butt",
+                                pathColor: `rgba(255, 215, 0)`,
+                                backgroundColor: '#3e98c7',
+                            })}
+                        />}
+                    </ChangingProgressProvider>
+                </div>
+                <span className={styles.categoryText}>{catName}</span>
+            </div>
+            <div className={styles.clue}>
+                <span className={styles.clueText}>{data.text}</span>
+            </div>
+            <div className={styles.answer}>
+                <div className={styles.scoreRow}>
+                    <span className={styles.userScore}>{"Your total: $" + this.props.players[this.props.user]['score']}</span>
+                    <span className={styles.clueValue}>{"This clue: $" + data.value}</span>
+                </div>
+                <AnswerInput questionid={data.questionid} onSubmit={this.handleSubmit} />
+            </div>
+        </div>)
+    }
+    
+    getAnswerSummary = () => {
+        const answers = this.props.lastAnswers;
+        return(
+            <div className={`${styles.questionSlider} ${styles.opened}`}>
+                <div className={styles.clue}>
+                    {answers.map(answer => {
+                        return(<span className={styles.clueText}>{answer.user + " answered: "} <b>{answer.answer}</b></span>)
+                    })}
+                </div>
+            </div>
+        )
     }
 
     render() {
@@ -92,7 +107,7 @@ class QuestionGrid extends Component {
                 <div className={styles.questionGrid}>
                     {this.getBoard()}
                 </div>
-                {this.getQuestionDisplay()}
+                {this.getDisplay()}
             </div>
         );
     }

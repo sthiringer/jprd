@@ -5,6 +5,7 @@ import QuestionGrid from "../QuestionGrid/QuestionGrid";
 import ChatDisplay from "../ChatDisplay/ChatDisplay";
 import PlayerDisplay from "../PlayerDisplay/PlayerDisplay";
 import styles from './MultiplayerHome.module.css';
+import gameBoardStyles from '../QuestionGrid/QuestionGrid.module.css'
 
 let chat = undefined;
 const QUESTION_VALUES = [200, 400, 600, 800, 1000]
@@ -71,7 +72,6 @@ class MultiplayerHome extends Component {
           )
           const res = await response.json()
           const game = this.formatGame(res);
-          console.log(game);
           this.setState({...this.state, gameData:game})
         }catch(err){
           console.log("There was an error in the HTTP request", err);
@@ -103,7 +103,7 @@ class MultiplayerHome extends Component {
                 case "MSG":
                     this.setState((prevState) => ({
                         ...prevState, 
-                        messages: [...prevState.messages, msg]
+                        messages: [msg, ...prevState.messages]
                     }));
                     break;
                 
@@ -177,21 +177,31 @@ class MultiplayerHome extends Component {
 
     handleChangeTurn = (msg) => {
         //Select next picker and update scores
-        console.log(msg.gameData)
-        this.setState((prevState) => {
-            let updatedScores = prevState.players
-            //This feels real ugly
-            for(const item of msg.newScores){
-                for(const key in item){
-                    updatedScores[key]['score'] = item[key];
-                }
+        let updatedScores = this.state.players;
+        let nextPlayer = null;
+        //This feels real ugly
+        for(const item of msg.newScores){
+            for(const key in item){
+                updatedScores[key]['score'] = item[key];
             }
-            return ({...prevState,
-                picking: (msg.nextPlayer ? msg.nextPlayer : prevState.prevPicker),
-                players: updatedScores,
-                gameData: this.formatGame(msg.gameData)
-            })
-        });
+        }
+
+        for(const answer of msg.answers){
+            if(answer["winner"]){
+                nextPlayer = answer["user"];
+            }
+        }
+        this.setState({...this.state,
+            picking: (nextPlayer ? nextPlayer : this.state.prevPicker),
+            players: updatedScores,
+            gameData: this.formatGame(msg.gameData),
+            lastAnswers: msg.answers,
+            summary: true,
+        })
+        //Show correct/incorrect answers for 5 seconds, then carry on with next turn
+        setTimeout(() => {
+            this.setState({...this.state, summary: false});
+        }, 5000);
     }
 
     sendChatMessage = (msg) => {
@@ -212,20 +222,27 @@ class MultiplayerHome extends Component {
             this.state.gameData ? (
                 <div className={styles.containerApp}>
                     <Header />
-                    <span>{"Your room code: " + this.props.location.state.r}</span>
-                    {this.props.location.state.c && !this.state.started && <button onClick={this.startGame}/>}
                     <div className={styles.containerContent}>
-                        <QuestionGrid gameData={this.state.gameData} 
-                        lastPicked={this.state.lastPicked} 
-                        answering={this.state.answering} 
-                        onPick={this.sendPick}
-                        onAnswer={this.handleAnswer}
-                        picking={this.state.picking}
-                        players={this.state.players}
-                        user={this.props.location.state.u}
-                        />
+                        {this.state.started ? 
+                            <QuestionGrid gameData={this.state.gameData} 
+                            lastPicked={this.state.lastPicked} 
+                            answering={this.state.answering} 
+                            onPick={this.sendPick}
+                            onAnswer={this.handleAnswer}
+                            picking={this.state.picking}
+                            players={this.state.players}
+                            user={this.props.location.state.u}
+                            lastAnswers={this.state.lastAnswers}
+                            summary={this.state.summary}
+                            />
+                        :
+                            <div className={styles.preGameBoard}>
+                                {this.props.location.state.c && <button onClick={this.startGame}/>}
+                            </div>
+                        }
                         <div className={styles.containerPlayersChat}>
                             <PlayerDisplay players={this.state.players} picking={this.state.picking}/>
+                            <span>{"Your room code: " + this.props.location.state.r}</span>
                             <ChatDisplay messages={this.state.messages} onSendMessage={this.sendChatMessage}/>
                         </div>
                     </div>

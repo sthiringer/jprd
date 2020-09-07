@@ -2,17 +2,23 @@
     display: flex;
     flex-flow: column nowrap;
     flex: 1 1 0;
+    height: 0px;
 }
 
 .messageDisplay{
     display: flex;
     box-sizing: border-box;
-    flex-flow: column nowrap;
+    flex-flow: column-reverse nowrap;
     flex: 9 9 0;
     border: 5px solid grey;
     width: 100%;
-    justify-content: flex-end;
+    overflow-y: auto;
+    height: 100%;
 }
+
+/* .messageDisplay > :first-child{
+    margin-top: auto !important;
+} */
 
 .chatMessage{
     color: darkred;

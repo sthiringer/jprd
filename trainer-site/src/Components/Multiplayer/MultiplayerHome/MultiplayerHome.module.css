@@ -11,6 +11,12 @@
     justify-content: space-around;
 }
 
+.containerMeta{
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+}
+
 .containerPlayersChat{
     display: flex;
     flex-flow: column nowrap;
@@ -19,4 +25,10 @@
 .loadingText{
     align-self: center;
     text-align: center;
+}
+
+.preGameBoard{
+    height: 815px;
+    width: 900px;
+    background-color: #00007f;
 }
