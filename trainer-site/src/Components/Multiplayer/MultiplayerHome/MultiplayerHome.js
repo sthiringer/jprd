@@ -5,7 +5,6 @@ import QuestionGrid from "../QuestionGrid/QuestionGrid";
 import ChatDisplay from "../ChatDisplay/ChatDisplay";
 import PlayerDisplay from "../PlayerDisplay/PlayerDisplay";
 import styles from './MultiplayerHome.module.css';
-import gameBoardStyles from '../QuestionGrid/QuestionGrid.module.css'
 
 let chat = undefined;
 const QUESTION_VALUES = [200, 400, 600, 800, 1000]
@@ -98,7 +97,6 @@ class MultiplayerHome extends Component {
 
         chat.onmessage = (event) => {
             const msg = JSON.parse(event.data);
-            console.log(msg);
             switch (msg.meta) {
                 case "MSG":
                     this.setState((prevState) => ({
@@ -149,7 +147,7 @@ class MultiplayerHome extends Component {
     handlePick = (data) => {
         //data[0] = position of q on board, [1] = value of q on board
         //Trigger question sliding up from bottom of board, covering everything
-        this.setState((prevState) => ({...prevState, lastPicked: data[0], answering: true, prevPicker: prevState.picking}));
+        this.setState((prevState) => ({...prevState, lastPicked: data[0], answering: true, prevPicker: prevState.picking, answerStartTime: new Date().getTime()}));
         setTimeout(() => {
             this.setState({...this.state, answering: false});
             //Validate answers here and return correct answerer (or previous picker) for next turn
@@ -196,11 +194,12 @@ class MultiplayerHome extends Component {
             players: updatedScores,
             gameData: this.formatGame(msg.gameData),
             lastAnswers: msg.answers,
+            correctAnswer: msg.correctAnswer,
             summary: true,
         })
         //Show correct/incorrect answers for 5 seconds, then carry on with next turn
         setTimeout(() => {
-            this.setState({...this.state, summary: false});
+            this.setState({...this.state, summary: false, answerStartTime: -1});
         }, 5000);
     }
 
@@ -233,11 +232,13 @@ class MultiplayerHome extends Component {
                             players={this.state.players}
                             user={this.props.location.state.u}
                             lastAnswers={this.state.lastAnswers}
+                            correctAnswer={this.state.correctAnswer}
                             summary={this.state.summary}
+                            answerStartTime={this.state.answerStartTime}
                             />
                         :
                             <div className={styles.preGameBoard}>
-                                {this.props.location.state.c && <button onClick={this.startGame}/>}
+                                {this.props.location.state.c && <button className={styles.startButton} onClick={this.startGame}><span className={styles.startButtonText}>{"Start Game"}</span></button>}
                             </div>
                         }
                         <div className={styles.containerPlayersChat}>

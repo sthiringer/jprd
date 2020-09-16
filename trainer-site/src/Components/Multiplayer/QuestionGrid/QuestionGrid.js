@@ -89,11 +89,20 @@ class QuestionGrid extends Component {
     
     getAnswerSummary = () => {
         const answers = this.props.lastAnswers;
+        console.log(answers);
         return(
             <div className={`${styles.questionSlider} ${styles.opened}`}>
                 <div className={styles.clue}>
+                    <span className={styles.clueText}>{"The correct answer was " + this.props.correctAnswer}</span>
                     {answers.map(answer => {
-                        return(<span className={styles.clueText}>{answer.user + " answered: "} <b>{answer.answer}</b></span>)
+                        if(answer.correct && answer.winner){
+                            return(<span className={styles.clueText}>{answer.user + " answered: "} <b className={styles.green}>{answer.answer}</b>{" in " + (answer.time - this.props.answerStartTime) / 1000 + " seconds."}</span>)
+                        }else if(answer.correct && !answer.winner){
+                            return(<span className={styles.clueText}>{answer.user + " answered: "} <b>{answer.answer}</b>{" in " + (answer.time - this.props.answerStartTime) / 1000 + " seconds."}</span>)
+                        }else{
+                            return(<span className={styles.clueText}>{answer.user + " answered: "} <b className={styles.red}>{answer.answer}</b>{" in " + (answer.time - this.props.answerStartTime) / 1000 + " seconds."}</span>)
+                        }
+                        
                     })}
                 </div>
             </div>

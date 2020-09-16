@@ -28,7 +28,22 @@
 }
 
 .preGameBoard{
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    justify-content: center;
     height: 815px;
     width: 900px;
     background-color: #00007f;
+}
+
+.startButton{
+    color: white;
+    width: 15%;
+    height: 5%;
+}
+
+.startButtonText{
+    color: black;
+    font-weight: bold;
 }
